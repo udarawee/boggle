@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export class BoggleGame {
 
     constructor() {
@@ -9,14 +11,9 @@ export class BoggleGame {
         this.board = await this.createBoard()
     }
 
-    createBoard() {
-        // TODO: Replace with call to server
-        return Promise.resolve([
-            ['A', 'B', 'C', 'D'],
-            ['E', 'F', 'G', 'H'],
-            ['I', 'J', 'K', 'L'],
-            ['M', 'N', 'O', 'P'],
-        ])
+    async createBoard() {
+        const response = await axios.post('/api/games')
+        return response.data.board;
     }
 
     finishGame() {

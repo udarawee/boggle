@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
   root 'pages#index'
-  resource :games, only: :create
+  namespace :api do
+    resource :games, only: :create
+  end
 end
