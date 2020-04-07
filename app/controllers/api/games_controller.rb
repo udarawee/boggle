@@ -10,7 +10,7 @@ class Api::GamesController < ApplicationController
       params[:submitted_words],
     )
 
-    render json: {valid_words: evaluator.valid_words, score: evaluator.score}
+    render json: { valid_words: evaluator.valid_words, score: evaluator.score }
   end
 
   def board

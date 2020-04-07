@@ -9,11 +9,11 @@ class BoggleEvaluatorService
 
   def initialize(board, answers)
     @board = board
-    @answers = answers
+    @answers = answers.map(&:upcase)
   end
 
   def score
-    valid_words.map(&:length).sum
+    @score ||= valid_words.map(&:length).sum
   end
 
   def valid_words
