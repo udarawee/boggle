@@ -8,6 +8,7 @@ class Api::GamesController < ApplicationController
     evaluator = ::BoggleEvaluatorService.new(
       params[:board],
       params[:submitted_words],
+      dictionary,
     )
 
     render json: { valid_words: evaluator.valid_words, score: evaluator.score }
@@ -15,5 +16,13 @@ class Api::GamesController < ApplicationController
 
   def board
     @board ||= ::BoggleService.new.board
+  end
+
+  # TODO: Move to a service object
+  def dictionary
+    @dictionary ||= Rails.cache.fetch("boggle_dictionary", expires_in: 12.hours) do
+      path = File.join(Rails.root, 'app', 'assets', 'dictionary.json')
+      JSON.parse(File.read(path))
+    end
   end
 end
