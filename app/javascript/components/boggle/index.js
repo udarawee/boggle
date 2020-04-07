@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { BoggleGame } from "../../services/boggle-game";
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 
 
 export const Boggle = () => {
@@ -50,6 +51,7 @@ export const Boggle = () => {
         {
           submittedWords.map((word, i) => <div key={i}>{word}</div>)
         }
+        <Button variant="contained" onClick={game.finishGame}>Submit</Button>
       </>
   )
 };

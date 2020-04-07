@@ -16,8 +16,12 @@ export class BoggleGame {
         return response.data.board;
     }
 
-    finishGame() {
-
+    //TODO: why is this not bound properly here without arrow func (?)
+    finishGame = () => {
+        axios.post('/api/games/save', {
+            board: this.board,
+            submitted_words: this.submittedWords
+        })
     }
 
     submitWord(word) {
