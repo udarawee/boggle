@@ -1,5 +1,5 @@
 class BoggleEvaluatorService
-  attr_reader :board, :answers, :dictionary
+  attr_reader :board, :answers
 
   DIRECTIONS = [
     [-1, 0], [1, 0], [1, 1],
@@ -7,10 +7,9 @@ class BoggleEvaluatorService
     [0, 1], [0, -1]
   ].freeze
 
-  def initialize(board, answers, dictionary)
+  def initialize(board, answers)
     @board = board
     @answers = answers.map(&:upcase)
-    @dictionary = dictionary
   end
 
   def score
@@ -21,7 +20,7 @@ class BoggleEvaluatorService
     @valid_words ||= answers.select do |answer|
       answer.length > 1 &&
         exists_on_board?(answer) &&
-        dictionary.key?(answer.downcase)
+        BoggleDictionary.exists?(answer)
     end
   end
 
