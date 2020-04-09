@@ -1,9 +1,16 @@
 import React from 'react';
-import Container from '@material-ui/core/Container'
-import Grid from '@material-ui/core/Grid'
+// import Container from '@material-ui/core/Container'
+// import Grid from '@material-ui/core/Grid'
+import styled from 'styled-components'
 import axios from 'axios';
 
 import { Boggle } from './boggle'
+
+const Container = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+`
 
 export const App = () => {
   const csrfToken = document.querySelector('[name=csrf-token]').content
@@ -11,11 +18,8 @@ export const App = () => {
 
   return (
     <Container>
-      <Grid container justify="center">
-        <Grid item xs={1}>
-          <Boggle/>
-        </Grid>
-      </Grid>
+      <h1>BOGGLE</h1>
+        <Boggle/>
     </Container>
   )
 };
