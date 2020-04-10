@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Countdown from 'react-countdown';
+
 
 import { BoggleGame } from "../../services/boggle-game";
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 
+const THREE_MINUTES = 1000*60*3
 
 export const Boggle = () => {
   const [game, setGame ]= useState(null);
   const [currentWord, setCurrentWord]= useState('');
+  const [wordIsValid, setWordIsValid]= useState(true);
   const [submittedWords, setSubmittedWords] = useState([])
+  const [timeLeft] = useState(Date.now() + THREE_MINUTES)
+  const [gameOver, setGameOver] = useState(false)
 
   useEffect( () => {
     async function initGame() {
@@ -31,13 +37,15 @@ export const Boggle = () => {
       // could highlight the letters in the board
       return;
     }
-    setCurrentWord('');
     if(!game.submitWord(currentWord)) {
-      // TODO: flash screen to show this was illegal
+      setCurrentWord('');
+      setWordIsValid(false)
       return;
     }
+    setWordIsValid(true)
     // only add to submitted words list
     setSubmittedWords([...submittedWords, currentWord]);
+    setCurrentWord('');
   });
 
   return (
@@ -48,15 +56,22 @@ export const Boggle = () => {
         </Box>
         <InputContainer>
           <TextField
+              error={!wordIsValid}
               id="standard-basic"
               value={currentWord}
               onKeyDown={handleKeyDown}
-              onChange={(e) => setCurrentWord(e.target.value)}/>
+              onChange={(e) => setCurrentWord(e.target.value.toUpperCase())}/>
           <Button variant="contained" onClick={game.finishGame}>Submit</Button>
         </InputContainer>
       </div>
       <WordListContainer>
-        <h2>Your Words</h2>
+        <Countdown
+          date={timeLeft}
+          renderer={props => <div>{`${props.minutes}:${props.seconds}`}</div>}
+          onComplete={() => setGameOver(true)}
+        >
+        </Countdown>
+        <h2>Score {`${game.score}`}</h2>
         <WordList>
           {
             submittedWords.map((word, i) => <div key={i}>{word}</div>)

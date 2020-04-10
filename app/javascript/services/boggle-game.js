@@ -5,15 +5,19 @@ export class BoggleGame {
     constructor() {
         this.board = null;
         this.submittedWords = [];
+        this.validWords = [];
+        this.score = 0;
     }
 
     async init() {
-        this.board = await this.createBoard()
+        const res = await this.createBoard();
+        this.board = res.board;
+        this.validWords = res.valid_words;
     }
 
     async createBoard() {
         const response = await axios.post('/api/games')
-        return response.data.board;
+        return response.data;
     }
 
     //TODO: why is this not bound properly here without arrow func (?)
@@ -27,11 +31,16 @@ export class BoggleGame {
     submitWord(word) {
         if(!this.possibleWord(word)) { return false }
         this.submittedWords.push(word);
+        this.updateScore(word);
         return true;
     }
 
-    //TODO: implement
+    updateScore(word) {
+        this.score += word.length;
+    }
+
     possibleWord(word) {
-        return true;
+        return !this.submittedWords.includes(word.toUpperCase()) &&
+          this.validWords.includes(word.toUpperCase())
     }
 }
