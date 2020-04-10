@@ -24,7 +24,8 @@ class BoggleSolver
     end
     all_words
   end
-
+  
+  private
   def find_words(current, y, x, visited)
     found = []
 

@@ -9,6 +9,7 @@ class BoggleDictionary
     entry(word) >= PREFIX_VALUE
   end
 
+  private
   def self.entry(word)
     Rails.cache.fetch(word.downcase) || 0
   end

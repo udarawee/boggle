@@ -1,4 +1,4 @@
-RSpec.describe 'BoggleSolver' do
+RSpec.describe BoggleSolver do
   let(:board) do
     [
       %w(T O),
