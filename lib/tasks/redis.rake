@@ -5,8 +5,9 @@ namespace :redis do
   task setup: :environment do
     path = File.join(Rails.root, 'app', 'assets', 'dictionary_raw.txt')
     File.open(path, 'rb').each do |line|
-      word = line.strip
-
+      word = line.strip.downcase
+      
+      pp "processing word #{word}"
       (0..word.length-1).each do |i|
         slice = word[0..i]
         # at final letter
