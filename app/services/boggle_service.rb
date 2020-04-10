@@ -29,6 +29,7 @@ class BoggleService
       .deep_dup
       .shuffle
       .map(&:sample)
-      .each_slice(4) # converts to array of arrays with 4 chars
+      .each_slice(4)
+      .to_a# converts to array of arrays with 4 chars
   end
 end
