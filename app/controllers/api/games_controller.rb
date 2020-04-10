@@ -4,13 +4,7 @@ class Api::GamesController < ApplicationController
   end
 
   def save
-    params.require([:board, :submitted_words])
-    evaluator = ::BoggleEvaluatorService.new(
-      params[:board],
-      params[:submitted_words]
-    )
-
-    render json: { valid_words: evaluator.valid_words, score: evaluator.score }
+    render json: { status: 'ok' }
   end
 
   def board
