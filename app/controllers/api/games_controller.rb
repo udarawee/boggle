@@ -7,7 +7,7 @@ class Api::GamesController < ApplicationController
   end
 
   def board
-    @board ||= ::BoggleService.new.board
+    @board ||= BoggleService.new.board
   end
 
   def solver
