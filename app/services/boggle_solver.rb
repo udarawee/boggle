@@ -1,5 +1,5 @@
 class BoggleSolver
-  attr_reader :board, :valid_words
+  attr_reader :board
   DIRECTIONS = [
     [-1, -1], [0, -1], [1, -1],
     [-1, 0],          [1, 0],
@@ -8,7 +8,6 @@ class BoggleSolver
 
   def initialize(board)
     @board = board
-    @valid_words = []
   end
 
 
@@ -22,7 +21,7 @@ class BoggleSolver
         all_words += find_words(board[y][x], y, x, visited)
       end
     end
-    all_words
+    all_words.uniq
   end
   
   private
@@ -45,7 +44,7 @@ class BoggleSolver
         visited.delete([ny,nx])
       end
     end
-    return found.uniq
+    return found
   end
 
 
