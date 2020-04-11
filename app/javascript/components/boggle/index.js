@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Countdown from 'react-countdown';
 
-
 import { BoggleGame } from "../../services/boggle-game";
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
 
 const THREE_MINUTES = 1000*60*3
 
@@ -17,7 +15,6 @@ export const Boggle = () => {
   const [submittedWords, setSubmittedWords] = useState([])
   const [timeLeft] = useState(Date.now() + THREE_MINUTES)
   const [gameOver, setGameOver] = useState(false)
-
   useEffect( () => {
     async function initGame() {
       const boggleGame = new BoggleGame();
@@ -35,6 +32,7 @@ export const Boggle = () => {
   const handleKeyDown = (event => {
     if (event.key !== 'Enter') {
       // could highlight the letters in the board
+      setWordIsValid(true)
       return;
     }
     if(!game.submitWord(currentWord)) {
@@ -54,23 +52,26 @@ export const Boggle = () => {
         <Box>
           {game.board.map(((row, i) => <GameRow row={row} key={i}></GameRow>))}
         </Box>
-        <InputContainer>
-          <TextField
-              error={!wordIsValid}
-              id="standard-basic"
-              value={currentWord}
-              onKeyDown={handleKeyDown}
-              onChange={(e) => setCurrentWord(e.target.value.toUpperCase())}/>
-          <Button variant="contained" onClick={game.finishGame}>Submit</Button>
-        </InputContainer>
+        { !gameOver &&
+          <InputContainer>
+            <TextField
+                error={!wordIsValid}
+                id="standard-basic"
+                value={currentWord}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => setCurrentWord(e.target.value.toUpperCase())}
+                placeholder="Enter words"
+                helperText={!wordIsValid && 'invalid word'}/>
+          </InputContainer>
+        }
       </div>
       <WordListContainer>
-        <Countdown
+        { !gameOver && <Countdown
           date={timeLeft}
           renderer={props => <div>{`${props.minutes}:${props.seconds}`}</div>}
           onComplete={() => setGameOver(true)}
-        >
-        </Countdown>
+        /> }
+        <h2>{gameOver && 'Game Over'}</h2>
         <h2>Score {`${game.score}`}</h2>
         <WordList>
           {

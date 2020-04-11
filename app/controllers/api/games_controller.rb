@@ -1,10 +1,9 @@
 class Api::GamesController < ApplicationController
   def create
-    render json: { board: board, valid_words: solver.find_all_words }
-  end
-
-  def save
-    render json: { status: 'ok' }
+    render json: {
+      board: board,
+      valid_words: solver.find_all_words.map { |w| Digest::MD5.hexdigest(w) }
+    }
   end
 
   def board

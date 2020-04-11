@@ -1,4 +1,5 @@
 import axios from 'axios';
+import md5 from 'js-md5';
 
 export class BoggleGame {
 
@@ -20,16 +21,8 @@ export class BoggleGame {
         return response.data;
     }
 
-    //TODO: why is this not bound properly here without arrow func (?)
-    finishGame = () => {
-        axios.post('/api/games/save', {
-            board: this.board,
-            submitted_words: this.submittedWords
-        })
-    }
-
     submitWord(word) {
-        if(!this.possibleWord(word)) { return false }
+        if(!this.isValidWord(word)) { return false }
         this.submittedWords.push(word);
         this.updateScore(word);
         return true;
@@ -39,8 +32,8 @@ export class BoggleGame {
         this.score += word.length;
     }
 
-    possibleWord(word) {
+    isValidWord(word) {
         return !this.submittedWords.includes(word.toUpperCase()) &&
-          this.validWords.includes(word.toUpperCase())
+          this.validWords.includes(md5(word.toUpperCase()))
     }
 }
