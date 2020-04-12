@@ -27,16 +27,14 @@ class BoggleSolver
   private
   def find_words(current, y, x, visited)
     found = []
-
     if !BoggleDictionary.prefix?(current)
       return found
     end
 
     found << current if BoggleDictionary.word?(current)
-    DIRECTIONS.each do |dx, dy|
+    DIRECTIONS.each do |dy, dx|
       nx, ny = x + dx, y + dy
-      # if in_board(ny, nx) && !visited[ny][nx]
-      if in_board(ny, nx) && !visited.include?([ny,nx])
+      if in_board?(ny, nx) && !visited.include?([ny,nx])
         visited << [ny,nx]
         new_letter = board[ny][nx]
         new_current = current+new_letter
@@ -48,7 +46,7 @@ class BoggleSolver
   end
 
 
-  def in_board(y,x)
+  def in_board?(y,x)
     y>=0 && y<num_rows && x >=0 && x<num_columns
   end
 
