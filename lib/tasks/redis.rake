@@ -1,26 +1,10 @@
 namespace :redis do
-  require_relative '../../app/services/boggle_dictionary'
+  require_relative '../../app/services/dictionary_loader_service'
 
   desc "seeds cache with words from dictionary"
-  task setup: :environment do
-    path = File.join(Rails.root, 'app', 'assets', 'dictionary_raw.txt')
-    File.open(path, 'rb').each do |line|
-      word = line.strip.downcase
-      
-      pp "processing word #{word}"
-      (0..word.length-1).each do |i|
-        slice = word[0..i]
-        # at final letter
-        if slice.length == word.length
-          Rails.cache.write(slice, BoggleDictionary::WORD_VALUE)
-          next
-        end
-        # do nothing if this prefix already exists
-        existing_entry = Rails.cache.fetch(slice)
-        next if existing_entry.present?
-        Rails.cache.write(slice, BoggleDictionary::PREFIX_VALUE)
-      end
-    end
-
+  task :setup, [:mode] => :environment do |_, args|
+    file_name = args[:mode] == 'simple' ? 'dictionary_raw_simple.txt' : 'dictionary_raw.txt'
+    pp file_name
+    DictionaryLoaderService.new(file_name).call
   end
 end
