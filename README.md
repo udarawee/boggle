@@ -23,7 +23,6 @@ Things you may want to cover:
      * Run `bundle exec rake redis:setup` to seed redis with a more exhaustive dictionary. This will take considerably longer
           
 * Running locally
-    * After cloning, run the following   
      ```
       $ bundle install
       $ yarn
