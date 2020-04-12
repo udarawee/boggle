@@ -26,6 +26,15 @@ RSpec.describe BoggleSolver do
         expect(result.sort).to eq(%w(POTATOES SPOT TOPS))
       end
     end
+
+    context 'when a prefix does not exist' do
+      before { allow(BoggleDictionary).to receive(:prefix?).with('TAT').and_return(false)}
+      it 'does not keep searching' do
+        expect(BoggleDictionary).to_not have_received(:word?).with('TATO')
+        expect(BoggleDictionary).to_not have_received(:word?).with('TATP')
+      end
+      
+    end
   end
 end
 
