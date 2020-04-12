@@ -8,7 +8,7 @@ class DictionaryLoaderService
     File.open(path, 'rb').each do |line|
       word = line.strip.downcase
 
-      pp "processing word #{word}"
+      Rails.logger.info "processing word #{word}"
       (0..word.length-1).each do |i|
         slice = word[0..i]
         # at final letter
